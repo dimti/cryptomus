@@ -1,0 +1,87 @@
+#!/bin/bash
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+. "${SCRIPT_DIR}/_settings.sh" || {
+  echo "no settings" && exit 1
+}
+
+export WEB_GID=33
+export DIRS_MODE=775
+export FILES_MODE=664
+
+echo -n "Check sudo permissions... "
+
+sudo whoami
+
+[ ! -d "$TMP_DIR" ] && {
+  echo "no tmp dir" && exit 1
+}
+
+perms() {
+  TARGET=$1
+
+  chmodFromFile() {
+    MODE=$1
+    FILE_LIST_FILE=$2
+
+    # shellcheck disable=SC2046
+    # shellcheck disable=SC2006
+    chmod "$MODE" `cat "$FILE_LIST_FILE"`
+  }
+
+  export -f chmodFromFile
+
+  echo -n "Set correct ownerships for $(basename ${TARGET})... "
+  sudo chown -R $UID:$WEB_GID "${TARGET}"
+
+  if [[ -d "${TARGET}" ]]; then
+    # echo -n "and fixing permissions for these directory... "
+    # echo "Fetching dirs without spaces"
+    find "${TARGET}" -type d -not \( -path *${THEME}/dist* -o -path */node_modules* \) | grep -v ' ' > $TMP_DIR/dirs-without-spaces
+
+    # echo "Splitting dirs by 10000 lines"
+    split -l 10000 $TMP_DIR/dirs-without-spaces $TMP_DIR/dirs-without-spaces-part-
+
+    # echo "Fetching files without spaces"
+    find "${TARGET}" -type f -not \( -path *${THEME}/dist* -o -path */node_modules* \) | grep -v ' ' > $TMP_DIR/files-without-spaces
+
+    # echo "Splitting files at 10000 lines"
+    split -l 10000 $TMP_DIR/files-without-spaces $TMP_DIR/files-without-spaces-part-
+
+    # echo "Fetching dirs with spaces"
+    find "${TARGET}" -type d -not \( -path *${THEME}/dist* -o -path */node_modules* \) | grep ' ' > $TMP_DIR/dirs-with-spaces
+
+    # echo "Fetching files with spaces"
+    find "${TARGET}" -type f -not \( -path *${THEME}/dist* -o -path */node_modules* \) | grep ' ' > $TMP_DIR/files-with-spaces
+
+    # echo "Fixing permissions for dirs"
+    # shellcheck disable=SC2038
+    # shellcheck disable=SC2016
+    find $TMP_DIR/ -maxdepth 1 -type f -name "dirs-without-spaces-part-*" | xargs -I {} bash -c 'chmodFromFile $DIRS_MODE {}'
+
+    # echo "Fixing permissions for files"
+    # shellcheck disable=SC2038
+    # shellcheck disable=SC2016
+    find $TMP_DIR/ -maxdepth 1 -type f -name "files-without-spaces-part-*" | xargs -I {} bash -c 'chmodFromFile $FILES_MODE {}'
+
+    # echo "Fixing permissions for dirs with spaces"
+    cat $TMP_DIR/dirs-with-spaces | xargs -I {} chmod $DIRS_MODE "{}"
+
+    # echo "Fixing permissions for files with spaces"
+    cat $TMP_DIR/files-with-spaces | xargs -I {} chmod $FILES_MODE "{}"
+
+    # echo "Removing temporary files"
+    rm $TMP_DIR/files-*
+    rm $TMP_DIR/dirs-*
+    echo "ok"
+  else
+    echo -n "and fixing permission for this file... "
+    # echo "Fixing permissions"
+    chmod $FILES_MODE "${TARGET}"
+    echo "ok"
+  fi
+}
+
+for DIR in "${DIRS[@]}"; do
+  perms "$SCRIPT_DIR/../$DIR"
+done
