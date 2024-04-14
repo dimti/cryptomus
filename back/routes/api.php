@@ -6,6 +6,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 
+Route::group([
+    'middleware' => 'auth:sanctum',
+], function() {
+    Route::get('/users', [App\Http\Controllers\Users::class, 'index']);
+    Route::get('/users/{user}', [App\Http\Controllers\Users::class, 'show'])->scopeBindings();
+    Route::put('/users/{user}', [App\Http\Controllers\Users::class, 'update'])->scopeBindings();
+});
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -27,6 +35,9 @@ Route::post('/login', function (Request $request) {
     return [
         'id' => $user->id,
         'access_token' => $user->createToken('front')->plainTextToken,
+        "expires_in" => $ttl = intval(env('JWT_TTL', 10200)),
+        'exp' => $exp = (time() + $ttl * 60),
+        'accessTokenExpires' => $exp * 1000,
         'name' => $user->email,
     ];
 });

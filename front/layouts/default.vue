@@ -16,13 +16,18 @@
                 <el-main>
                     <slot />
                 </el-main>
-                <el-footer>Footer</el-footer>
+                <el-footer>
+                    <p>Footer</p>
+                    <p><a href="javascript:void(0);" @click="signOut">Logout</a></p>
+                </el-footer>
             </el-container>
         </el-container>
     </div>
 </template>
 <script setup lang="ts">
 const route = useRoute();
+
+const { signOut } = useAuth();
 
 const links = computed(() => {
     const linksMayBeRefreshed = [];
