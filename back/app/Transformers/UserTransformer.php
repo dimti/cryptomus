@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\User;
+use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Primitive;
 use League\Fractal\TransformerAbstract;
 
@@ -25,7 +26,7 @@ class UserTransformer extends TransformerAbstract
      * @var array
      */
     protected array $availableIncludes = [
-        //
+        'todos',
     ];
 
     /**
@@ -53,5 +54,10 @@ class UserTransformer extends TransformerAbstract
     public function includeUsername(User $user): Primitive
     {
         return $this->primitive($user->email);
+    }
+
+    public function includeTodos(User $user): Collection
+    {
+        return $this->collection($user->todos, app(TodoTransformer::class));
     }
 }

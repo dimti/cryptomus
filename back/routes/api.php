@@ -9,9 +9,23 @@ use Illuminate\Validation\ValidationException;
 Route::group([
     'middleware' => 'auth:sanctum',
 ], function() {
-    Route::get('/users', [App\Http\Controllers\Users::class, 'index']);
-    Route::get('/users/{user}', [App\Http\Controllers\Users::class, 'show'])->scopeBindings();
-    Route::put('/users/{user}', [App\Http\Controllers\Users::class, 'update'])->scopeBindings();
+    Route::group([
+        'prefix' => 'users',
+        'controller' => App\Http\Controllers\UserController::class
+    ], function() {
+        Route::get('/', 'index');
+        Route::get('/{user}', 'show')->scopeBindings();
+        Route::put('/{user}', 'update')->scopeBindings();
+
+        Route::group([
+            'prefix' => '{user}/todos',
+            'controller' => App\Http\Controllers\TodoController::class,
+        ], function () {
+            Route::get('/', 'index');
+            Route::post('/', 'create');
+            Route::put('/{todo}', 'update');
+        })->scopeBindings();
+    });
 });
 
 Route::get('/user', function (Request $request) {

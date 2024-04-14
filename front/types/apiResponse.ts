@@ -1,3 +1,3 @@
-export interface ApiResponse<M> {
-    data: M;
-}
+import { DataWrapper } from '~/types/dataWrapper';
+
+export interface ApiResponse<M> extends DataWrapper<M> {}
