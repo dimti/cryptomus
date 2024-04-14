@@ -4,15 +4,6 @@ import { NuxtAuthHandler } from '#auth';
 
 import { Session } from '~/types/session';
 
-const validUsers = [
-    { id: '1', name: 'admin', roles: ['admin'] },
-    { id: '2', name: 'user' },
-];
-
-export function findUserById(id: string | undefined) {
-    return validUsers.find((user) => user.id === id);
-}
-
 const config = useRuntimeConfig();
 
 export default defineEventHandler(

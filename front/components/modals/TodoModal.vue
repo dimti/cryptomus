@@ -37,14 +37,7 @@ $activeModalsBus.$on('TodoModal', ({ $user, $todo }: { $user: User; $todo?: Todo
         <template #footer>
             <div v-if="user && todo" class="dialog-footer">
                 <el-button @click="dialogVisible = false">Close</el-button>
-                <el-button
-                    type="primary"
-                    @click="
-                        saveTodo(user, todo, () => {
-                            dialogVisible = false;
-                            $activeModalsBus.$emit('TodoModalSaved');
-                        })
-                    "
+                <el-button type="primary" @click="saveTodo(user, todo).then(() => (dialogVisible = false))"
                     >Save
                 </el-button>
             </div>

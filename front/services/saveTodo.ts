@@ -3,9 +3,9 @@ import { useApi } from '~/composables/useApi';
 import { Todo } from '~/types/todo';
 import { User } from '~/types/user';
 
-export const saveTodo = async (user: User, todo: Todo, successCallback?: () => void) => {
+export const saveTodo = async (user: User, todo: Todo) => {
     try {
-        return await useApi<User>(`users/${user.id}/todos${todo.id ? `/${todo.id}` : ''}`, {
+        return useApi<User>(`users/${user.id}/todos${todo.id ? `/${todo.id}` : ''}`, {
             method: todo.id ? 'PUT' : 'POST',
             body: todo,
         }).then(() => {
@@ -18,9 +18,7 @@ export const saveTodo = async (user: User, todo: Todo, successCallback?: () => v
                 ),
             });
 
-            if (successCallback) {
-                successCallback();
-            }
+            useNuxtApp().$activeModalsBus.$emit('TodoModalSaved');
         });
     } catch (error: any) {
         return undefined;

@@ -24,6 +24,7 @@ Route::group([
             Route::get('/', 'index');
             Route::post('/', 'create');
             Route::put('/{todo}', 'update');
+            Route::post('/delete', 'deleteRecords');
         })->scopeBindings();
     });
 });

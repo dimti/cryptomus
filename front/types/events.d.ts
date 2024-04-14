@@ -7,4 +7,5 @@ export type Events = {
         $todo?: Todo;
     };
     TodoModalSaved: undefined;
+    TodosRemoved: undefined;
 };

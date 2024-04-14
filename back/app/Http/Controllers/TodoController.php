@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Todo;
 use App\Models\User;
 use App\Transformers\TodoTransformer;
-use App\Transformers\UserTransformer;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -50,5 +50,19 @@ class TodoController extends Controller
                 'required'
             ],
         ]);
+    }
+
+    public function deleteRecords(User $user, Request $request)
+    {
+        $request->validate([
+            'id' => [
+                'required',
+                Rule::exists(Todo::class, 'id')->where(
+                    fn(Builder $query) => $query->where('user_id', $user->id)
+                ),
+            ],
+        ]);
+
+        Todo::destroy($request->input('id'));
     }
 }
