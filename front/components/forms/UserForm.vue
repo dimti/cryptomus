@@ -18,8 +18,12 @@ const form = useVModel(props, 'modelValue', emit);
             <el-input v-model="form.username" />
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="updateUser(form)">Save</el-button>
-            <el-button @click="navigateTo('/users')">Cancel</el-button>
+            <el-button class="flex-none" type="primary" @click="updateUser(form)">Save</el-button>
+            <el-button class="flex-none" @click="navigateTo('/users')">Cancel</el-button>
+            <div class="flex-grow"></div>
+            <el-button class="flex-none" type="warning" @click="$activeModalsBus.$emit('CryptomusModal')"
+                >Cryptomus</el-button
+            >
         </el-form-item>
     </el-form>
 </template>

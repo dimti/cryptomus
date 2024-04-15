@@ -2,12 +2,13 @@
 import { ref } from 'vue';
 import { ElMessageBox } from 'element-plus';
 
+import { useInuts } from '~/composables/useInputs';
+
 import TodoForm from '~/components/forms/TodoForm.vue';
 
 import { saveTodo } from '~/services/saveTodo';
 import { Todo } from '~/types/todo';
 import { User } from '~/types/user';
-import { useInuts } from '~/composables/useInputs';
 
 const dialogVisible = ref(false);
 
@@ -46,7 +47,7 @@ function onSubmit() {
 
 <template>
     <el-dialog v-model="dialogVisible" title="TodoModal" width="500" :before-close="handleClose">
-        <TodoForm v-model="todo" :user="user" @submit="onSubmit" ref="formRef" />
+        <TodoForm ref="formRef" v-model="todo" :user="user" @submit="onSubmit" />
         <template #footer>
             <div v-if="user && todo" class="dialog-footer">
                 <el-button @click="dialogVisible = false">Close</el-button>

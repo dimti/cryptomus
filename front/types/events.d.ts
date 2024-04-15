@@ -8,4 +8,5 @@ export type Events = {
     };
     TodoModalSaved: undefined;
     TodosRemoved: undefined;
+    CryptomusModal: undefined;
 };

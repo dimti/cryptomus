@@ -31,6 +31,7 @@
                 <el-table-column prop="complete" label="Complete" width="180" />
             </el-table>
         </template>
+        <CryptomusModal />
     </div>
 </template>
 
@@ -45,6 +46,7 @@ import { getUser } from '~/services/getUser';
 import { removeTodos } from '~/services/removeTodos';
 import { Todo } from '~/types/todo';
 import { User } from '~/types/user';
+import CryptomusModal from '~/components/modals/CryptomusModal.vue';
 
 const user = ref<User>();
 const todos = ref<Todo[]>();

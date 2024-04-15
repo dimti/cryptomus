@@ -3,7 +3,7 @@ export default defineNuxtConfig({
     app: {
         // head
         head: {
-            title: 'Element Plus + Nuxt 3',
+            title: 'Cryptomus: TODO app with Laravel, Nuxt And EP',
             meta: [
                 { name: 'viewport', content: 'width=device-width, initial-scale=1' },
                 {
@@ -56,7 +56,10 @@ export default defineNuxtConfig({
         css: {
             preprocessorOptions: {
                 scss: {
-                    additionalData: `@use "@/assets/scss/element/index.scss" as element;`,
+                    additionalData: `
+                    @use "@/assets/scss/element/index.scss" as element;
+                    @use "@/assets/scss/blocks/el-table.scss" as table;
+                    `,
                 },
             },
         },
