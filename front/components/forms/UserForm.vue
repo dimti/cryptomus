@@ -13,7 +13,7 @@ const form = useVModel(props, 'modelValue', emit);
 </script>
 
 <template>
-    <el-form v-if="form" :model="form" label-width="auto" style="max-width: 600px">
+    <el-form v-if="form" :model="form" label-width="auto" style="max-width: 600px" @submit.prevent="updateUser(form)">
         <el-form-item label="Username">
             <el-input v-model="form.username" />
         </el-form-item>
