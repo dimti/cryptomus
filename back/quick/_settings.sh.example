@@ -1,7 +1,9 @@
 #!/bin/bash
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export TMP_DIR=$SCRIPT_DIR/tmp
+TMP_DIR=$SCRIPT_DIR/tmp
+
+CAP_NAME=cap-beget
 
 DIRS=(
   storage

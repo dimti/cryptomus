@@ -73,6 +73,7 @@ export default defineNuxtConfig({
         themes: ['dark'],
     },
     auth: {
+        baseURL: process.env.NUXT_URL,
         provider: {
             type: 'authjs',
         },

@@ -1,0 +1,8 @@
+#!/bin/bash
+# exporting variables dot not effect to visibility for other scripts - all variables is visible
+SETTINGS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+export TMP_DIR=$SETTINGS_SCRIPT_DIR/tmp
+
+export CAP_NAME=cap-beget
+

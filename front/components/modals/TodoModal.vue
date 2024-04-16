@@ -56,6 +56,7 @@ function onSubmit() {
         title="TodoModal"
         :width="isMobileOrTablet ? '380' : '500'"
         :before-close="handleClose"
+        append-to-body
     >
         <TodoForm ref="formRef" v-model="todo" :user="user" @submit="onSubmit" />
         <template #footer>

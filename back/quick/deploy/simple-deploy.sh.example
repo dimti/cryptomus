@@ -1,0 +1,19 @@
+#!/bin/bash
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+APP_DIR=${SCRIPT_DIR}/../../..
+
+. "${SCRIPT_DIR}/../_settings.sh" || {
+  echo "no settings" && exit 1
+}
+
+ARCHIVE_FILENAME=simple-build.tar
+
+tar --exclude='vendor' --exclude='quick' --exclude='.env' --exclude='.gitignore' \
+    --transform='flags=r;s|back/.deploy|.deploy|' \
+    --transform='flags=r;s|back/captain-definition|captain-definition|' \
+    -C ${APP_DIR} -cf ${TMP_DIR}/${ARCHIVE_FILENAME} back
+
+caprover deploy -n ${CAP_NAME} -a cryptomus-back -t ${TMP_DIR}/${ARCHIVE_FILENAME}
+
+#rm ${TMP_DIR}/${ARCHIVE_FILENAME}

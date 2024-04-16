@@ -1,0 +1,16 @@
+#!/bin/bash
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+APP_DIR=${SCRIPT_DIR}/../..
+
+. "${SCRIPT_DIR}/../_settings.sh" || {
+  echo "no settings" && exit 1
+}
+
+ARCHIVE_FILENAME=simple-build.tar
+
+tar --transform='flags=r;s|.deploy/simple|.deploy|' -C ${APP_DIR} -cf ${TMP_DIR}/${ARCHIVE_FILENAME} .output ecosystem.config.js .deploy/simple captain-definition
+
+caprover deploy -n ${CAP_NAME} -a cryptomus-front -t ${TMP_DIR}/${ARCHIVE_FILENAME}
+
+rm ${TMP_DIR}/${ARCHIVE_FILENAME}
