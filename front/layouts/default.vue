@@ -1,8 +1,8 @@
 <template>
-    <div class="common-layout">
+    <div class="common-layout min-w-96">
         <el-container>
-            <el-aside width="200px">
-                <el-menu class="el-menu-vertical-demo" :default-active="route.fullPath" router>
+            <el-aside :width="isCollapse ? '70px' : '200px'" class="duration-700">
+                <el-menu class="el-menu-vertical-demo" :default-active="route.fullPath" :collapse="isCollapse" router>
                     <el-menu-item v-for="link in links" :key="link.label" :index="link.to">
                         <el-icon>
                             <component :is="link.icon" />
@@ -25,6 +25,14 @@
     </div>
 </template>
 <script setup lang="ts">
+import { breakpointsTailwind, useBreakpoints, useMounted } from '@vueuse/core';
+
+const breakpoints = useBreakpoints(breakpointsTailwind);
+
+const isMounted = useMounted();
+
+const isCollapse = computed(() => isMounted.value && breakpoints.smallerOrEqual('md').value);
+
 const route = useRoute();
 
 const { signOut } = useAuth();

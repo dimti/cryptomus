@@ -24,11 +24,21 @@
                 @row-click="$activeModalsBus.$emit('TodoModal', { $user: user, $todo: $event })"
                 @selection-change="handleSelectionChange"
             >
-                <el-table-column type="selection" width="55" />
+                <el-table-column type="selection" width="30" />
                 <el-table-column prop="id" label="ID" width="40" />
-                <el-table-column prop="created_at" label="Created" width="220" />
-                <el-table-column prop="title" label="Username" width="180" />
-                <el-table-column prop="complete" label="Complete" width="180" />
+                <el-table-column prop="created_at" label="Created" show-overflow-tooltip />
+                <el-table-column
+                    prop="title"
+                    show-overflow-tooltip
+                    :label="isMobileOrTablet ? 'User' : 'Username'"
+                    min-width="80"
+                />
+                <el-table-column
+                    prop="completed"
+                    :label="isMobileOrTablet ? '✔️' : 'Complete'"
+                    :width="isMobileOrTablet ? 55 : 'auto'"
+                    :align="isMobileOrTablet ? 'center' : 'left'"
+                />
             </el-table>
         </template>
         <CryptomusModal />
@@ -39,6 +49,7 @@
 import { RouteLocationNormalizedLoaded } from 'vue-router';
 
 import UserForm from '~/components/forms/UserForm.vue';
+import CryptomusModal from '~/components/modals/CryptomusModal.vue';
 import TodoModal from '~/components/modals/TodoModal.vue';
 
 import { getTodos } from '~/services/getTodos';
@@ -46,7 +57,7 @@ import { getUser } from '~/services/getUser';
 import { removeTodos } from '~/services/removeTodos';
 import { Todo } from '~/types/todo';
 import { User } from '~/types/user';
-import CryptomusModal from '~/components/modals/CryptomusModal.vue';
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 
 const user = ref<User>();
 const todos = ref<Todo[]>();
@@ -54,6 +65,9 @@ const todos = ref<Todo[]>();
 const route: RouteLocationNormalizedLoaded = useRoute();
 
 const { $activeModalsBus } = useNuxtApp();
+
+const breakpoints = useBreakpoints(breakpointsTailwind);
+const isMobileOrTablet = computed(() => breakpoints.smallerOrEqual('md').value);
 
 const selectedTodos = ref<Todo[]>([]);
 

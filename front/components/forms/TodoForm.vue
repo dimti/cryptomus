@@ -31,9 +31,12 @@ defineExpose({
 </script>
 
 <template>
-    <el-form v-if="form" :model="form" label-width="auto" style="max-width: 600px" @submit.prevent="$emit('submit')">
+    <el-form v-if="form" :model="form" label-width="40" style="max-width: 600px" @submit.prevent="$emit('submit')">
         <el-form-item label="Title">
             <el-input ref="inputTitleRef" v-model="form.title" />
+        </el-form-item>
+        <el-form-item>
+            <el-checkbox v-model="form.completed" :true-value="1" :false-value="0" label="Completed" size="large" />
         </el-form-item>
         <el-form-item v-if="props.showButtons && props.user">
             <el-button type="primary" @click="saveTodo(props.user, form)">Save</el-button>

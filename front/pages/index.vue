@@ -1,6 +1,6 @@
 <template>
     <div class="page-index">
-        <p>OK: {{ count }}</p>
+        <p>Home</p>
     </div>
 </template>
 
