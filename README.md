@@ -7,7 +7,7 @@ Copy `.env.example` to `.env` and enjoy it.
 Launch migrations (by default use sqlite database)
 
 ```
-./artisan migrate
+./artisan migrate --force
 ```
 
 And create user (because frontend need to auth):
@@ -31,9 +31,25 @@ Environment example for Insomnia:
 
 ```
 {
-    "baseUrl": "http://back.local.dimti.ru"
+	"local": {
+		"username": "your_username",
+		"password": "your_password",
+		"url": "http://back.local.dimti.ru"
+	},
+	"prod": {
+		"username": "your_username",
+		"password": "your_password",
+		"url": "https://api.cryptomus.dimti.ru"
+	},
+	"username": "{{ _.local.username }}",
+	"password": "{{ _.local.password }}",
+	"baseUrl": "{{ _.local.url }}"
 }
 ```
+
+## Tests
+
+Run test: `./artisan test`
 
 # Front
 
@@ -45,3 +61,5 @@ Use `pnpm run postinstall` for generate base types
 
 And use `pnpm run dev` and default address <http://front.local.dimti.ru:30412>
 (DNS ready to localhost)
+
+Demo available here: <https://cryptomus.dimti.ru>
