@@ -16,9 +16,9 @@ export async function useApi<M>(uri: string, options?: NitroFetchOptions<string,
                 Authorization: `Bearer ${(sessionData as Ref<Session>).value?.access_token}`,
             },
         }).catch((err) => {
-            // if (err.response.status === 401) {
-            //     signOut();
-            // }
+            if (err.response.status === 401) {
+                signOut();
+            }
         })) as ApiResponse<M>
     ).data;
 }

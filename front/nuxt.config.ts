@@ -63,9 +63,6 @@ export default defineNuxtConfig({
                 },
             },
         },
-        optimizeDeps: {
-            include: ['dayjs', 'dayjs/plugin/*'],
-        },
     },
     elementPlus: {
         icon: 'ElIcon',

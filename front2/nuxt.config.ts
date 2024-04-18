@@ -1,36 +1,43 @@
-import { createResolver } from 'nuxt/kit'
+import { createResolver } from "nuxt/kit";
 
-const { resolve } = createResolver(import.meta.url)
+const { resolve } = createResolver(import.meta.url);
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
-    ['@nuxt/ui', {
-      global: true
-    }],
-    '@nuxtjs/color-mode',
-    '@nuxt/image',
-    '@vueuse/nuxt',
-    '@pinia/nuxt',
-    'nuxt-gtag'
+    [
+      "@nuxt/ui",
+      {
+        global: true,
+      },
+    ],
+    "@nuxtjs/color-mode",
+    "@nuxt/image",
+    "@vueuse/nuxt",
+    "@pinia/nuxt",
+    "nuxt-gtag",
   ],
   colorMode: {
-    preference: 'light'
+    preference: "light",
   },
   ui: {
-    icons: ['heroicons', 'simple-icons']
+    icons: ["heroicons", "simple-icons"],
   },
   runtimeConfig: {
     github: {
-      clientId: '',
-      clientSecret: ''
+      clientId: "",
+      clientSecret: "",
     },
     session: {
-      name: 'nuxt-session',
-      password: ''
-    }
+      name: "nuxt-session",
+      password: "",
+    },
   },
-  experimental: { 
-    appManifest: false 
+  experimental: {
+    appManifest: false,
   },
-})
+  devServer: {
+    host: process.env.DEV_SERVER_HOST,
+    port: +(process.env.DEV_SERVER_PORT ?? 30412),
+  },
+});
