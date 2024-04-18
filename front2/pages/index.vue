@@ -1,15 +1,12 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
-  <div class="container mx-auto">
-    <AppHeader />
-
-    <h2 class="text-center min-h-screen">
-      Home
-    </h2>
-
-    <AppFooter /> 
-  </div>
+    <div class="page-index">
+        <p>Home</p>
+    </div>
 </template>
+
+<style></style>
+
+<script setup lang="ts">
+// const { data: count } = await useFetch('/api/count');
+const count = 1;
+</script>
